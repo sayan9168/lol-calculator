@@ -16,9 +16,5 @@
 ## 🚀 Live Demo
 [![Deploy to GitHub Pages](https://lol-calculator-kappa.vercel.app/)
 
-## 🛠️ How to Run
-1. Download `index.html`
-2. Double-click → Open in browser
-3. **OR** Deploy to GitHub/Netlify/Vercel
 
 ## 🎮 Try Now!
