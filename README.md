@@ -14,7 +14,7 @@
 - 🎨 **Gradient + glassmorphism design**
 
 ## 🚀 Live Demo
-[![Deploy to Vercel Pages](https://lol-calculator-kappa.vercel.app/)
+(https://lol-calculator-kappa.vercel.app/)
 
 
 ## 🎮 Try Now!
