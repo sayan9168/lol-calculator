@@ -14,7 +14,7 @@
 - 🎨 **Gradient + glassmorphism design**
 
 ## 🚀 Live Demo
-[![Deploy to GitHub Pages](https://github.com/user-attachments/assets/... )](https://yourusername.github.io/lol-calculator/)
+[![Deploy to GitHub Pages](https://lol-calculator-kappa.vercel.app/)
 
 ## 🛠️ How to Run
 1. Download `index.html`
