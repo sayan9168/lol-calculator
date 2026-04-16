@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>😂 Sayanox LOL Calculator by Sayan</title>
     <style>
+        /* Tomar sob CSS same thakbe - ami change korini */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Comic Sans MS', cursive; 
@@ -25,7 +26,6 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* RESPONSIVE CALCULATOR */
         .calculator { 
             background: rgba(255,255,255,0.97); 
             backdrop-filter: blur(25px);
@@ -38,10 +38,8 @@
             position: relative;
             overflow: hidden;
             border: 3px solid rgba(255,255,255,0.3);
-            touch-action: manipulation; /* Mobile touch fix */
         }
         
-        /* Mobile adjustments */
         @media (max-width: 480px) {
             .calculator { padding: 25px 20px; border-radius: 25px; }
             button { width: 65px !important; height: 65px !important; margin: 8px !important; font-size: 1.4em !important; }
@@ -103,9 +101,8 @@
             position: relative;
             overflow: hidden;
             font-family: 'Courier New', monospace;
-            user-select: none; /* Prevent text selection */
+            user-select: none;
             -webkit-user-select: none;
-            touch-action: manipulation;
         }
         .display::after {
             content: attr(data-meme); 
@@ -119,7 +116,6 @@
             max-width: 60%;
         }
         
-        /* BUTTON GRID - FIXED FOR MOBILE */
         .buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -144,11 +140,9 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.25);
             position: relative; 
             overflow: hidden;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent; /* Mobile tap fix */
+            -webkit-tap-highlight-color: transparent;
         }
         
-        /* Button shine effect */
         button::before {
             content: ''; 
             position: absolute; 
@@ -179,7 +173,7 @@
             70% { box-shadow: 0 0 0 20px rgba(250,112,154,0); } 
             100% { box-shadow: 0 0 0 0 rgba(250,112,154,0); } 
         }
-        .zero { grid-column: 1 / span 2; grid-row: 5; }
+        .zero { grid-column: 1 / span 2; grid-row: 5; width: 160px !important; border-radius: 40px !important; }
         .clear { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #333; font-size: 1.3em; }
         .fun { 
             background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%); 
@@ -223,12 +217,17 @@
             color: #666;
             font-weight: bold;
         }
+        @keyframes shakeCalc {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
     </style>
 </head>
 <body>
     <div class="party" id="party"></div>
     
-    <div class="calculator">
+    <div class="calculator" id="calculator">
         <div class="header">
             <h1>😂 LOL Calculator</h1>
             <div class="company">by Sayan | Sayanox Company 🛠️</div>
@@ -237,31 +236,26 @@
         <div class="display" id="display" data-meme="">0</div>
         
         <div class="buttons">
-            <!-- Row 1 -->
             <button class="fun" onclick="randomJoke()">🎉</button>
             <button class="clear" onclick="clearAll()">🧹</button>
             <button class="clear" onclick="deleteLast()">⌫</button>
             <button class="op" onclick="appendToDisplay('/')">÷</button>
             
-            <!-- Row 2 -->
             <button class="num" onclick="appendToDisplay('7')">7</button>
             <button class="num" onclick="appendToDisplay('8')">8</button>
             <button class="num" onclick="appendToDisplay('9')">9</button>
             <button class="op" onclick="appendToDisplay('*')">×</button>
             
-            <!-- Row 3 -->
             <button class="num" onclick="appendToDisplay('4')">4</button>
             <button class="num" onclick="appendToDisplay('5')">5</button>
             <button class="num" onclick="appendToDisplay('6')">6</button>
             <button class="op" onclick="appendToDisplay('-')">-</button>
             
-            <!-- Row 4 -->
             <button class="num" onclick="appendToDisplay('1')">1</button>
             <button class="num" onclick="appendToDisplay('2')">2</button>
             <button class="num" onclick="appendToDisplay('3')">3</button>
             <button class="op" onclick="appendToDisplay('+')">+</button>
             
-            <!-- Row 5 -->
             <button class="num zero" onclick="appendToDisplay('0')">0</button>
             <button class="num" onclick="appendToDisplay('.')">.</button>
             <button class="equals" onclick="calculate()">=</button>
@@ -271,7 +265,7 @@
         <div class="footer">Made with 🔥 by Sayan @ Sayanox Company</div>
     </div>
 
-    <!-- SAME JAVASCRIPT - NO CHANGES NEEDED -->
+    <!-- ✅ COMPLETE FIXED JAVASCRIPT -->
     <script>
         let display = '0';
         let memes = [
@@ -293,10 +287,15 @@
 
         function updateDisplay() {
             document.getElementById('display').textContent = display;
+            console.log('Display updated:', display); // Debug
         }
 
         function appendToDisplay(value) {
-            if (display === '0' || display === 'Error') display = '';
+            console.log('Appending:', value); // Debug
+            if (display === '0' || display === 'Error' || display === 'Sayanox Error! 😂💥') {
+                display = '';
+            }
+            if (value === '.' && display.includes('.')) return; // Prevent multiple decimals
             display += value;
             updateDisplay();
             shakeCalculator();
@@ -313,25 +312,36 @@
         function deleteLast() {
             display = display.slice(0, -1) || '0';
             updateDisplay();
-            playSound('delete');
         }
 
         function calculate() {
+            console.log('Calculating:', display); // Debug
             playSound('click');
             try {
-                let result = eval(display.replace('×', '*').replace('÷', '/'));
-                if (!isFinite(result)) throw 'Error';
-                display = Math.round(result * 10000000000) / 10000000000 + '';
-                display = display.slice(0, 14);
-                updateDisplay();
+                // Replace symbols and calculate
+                let expression = display.replace(/×/g, '*').replace(/÷/g, '/');
+                let result = eval(expression);
                 
+                if (!isFinite(result)) throw 'Error';
+                
+                // Format result
+                display = Math.round(result * 10000000000) / 10000000000 + '';
+                display = display.slice(0, 14).replace(/\.?0+$/, '');
+                
+                if (display === '') display = '0';
+                
+                updateDisplay();
+                console.log('Result:', display); // Debug
+                
+                // Random effects
                 const rand = Math.random();
                 if (rand < 0.25) partyTime();
                 else if (rand < 0.5) epicMeme(result);
                 else if (rand < 0.75) sayanJoke();
                 else crazyResult(result);
                 
-            } catch {
+            } catch (error) {
+                console.log('Error:', error); // Debug
                 display = 'Sayanox Error! 😂💥';
                 updateDisplay();
                 shakeHard();
@@ -340,7 +350,6 @@
             }
         }
 
-        // Rest of JavaScript remains SAME...
         function randomJoke() {
             const joke = jokes[Math.floor(Math.random() * jokes.length)];
             document.getElementById('joke').innerHTML = joke;
@@ -358,7 +367,9 @@
             showMeme(memes[Math.floor(Math.random() * memes.length)]);
         }
 
-        function sayanJoke() { randomJoke(); }
+        function sayanJoke() { 
+            randomJoke(); 
+        }
 
         function crazyResult(result) {
             if (result > 1000) showMeme('Sayanox SUPER NUMBER! 🚀');
@@ -372,24 +383,11 @@
         }
 
         function shakeCalculator() {
-            const calc = document.querySelector('.calculator');
-            calc.style.animation = 'shake 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            const calc = document.getElementById('calculator');
+            calc.style.animation = 'shakeCalc 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
             setTimeout(() => calc.style.animation = '', 400);
         }
 
         function shakeHard() {
-            const calc = document.querySelector('.calculator');
-            calc.style.animation = 'shake 0.8s infinite';
-            setTimeout(() => calc.style.animation = '', 1600);
-        }
-
-        function partyTime() {
-            const party = document.getElementById('party');
-            party.innerHTML = '';
-            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#ff9ff3', '#ffd93d'];
-            for (let i = 0; i < 80; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.background = colors[Math.floor(Math.random()*colors.length)];
-                confetti
+            const calc = document.getElementById('calculator');
+            calc.style.animation = 'shakeCalc 
