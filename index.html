@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>😂 Sayanox LOL Calculator by Sayan</title>
     <style>
-        /* Tomar sob CSS same thakbe - ami change korini */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Comic Sans MS', cursive; 
@@ -143,18 +142,6 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        button::before {
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: -100%; 
-            width: 100%; 
-            height: 100%; 
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); 
-            transition: left 0.5s;
-        }
-        button:hover::before, button:active::before { left: 100%; }
-        
         button:hover { transform: scale(1.15) rotate(8deg); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
         button:active { transform: scale(0.92) rotate(-5deg); }
         
@@ -199,18 +186,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             line-height: 1.4;
         }
-        .party { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1000; }
-        .confetti { 
-            position: absolute; 
-            width: 12px; height: 12px; 
-            animation: confetti-fall 4s linear infinite; 
-            border-radius: 50%;
-        }
-        @keyframes confetti-fall { 
-            0% { transform: translateY(-100vh) rotate(0deg) scale(0); opacity: 1; } 
-            50% { opacity: 1; scale(1); }
-            100% { transform: translateY(100vh) rotate(1080deg) scale(0); opacity: 0; } 
-        }
         .footer {
             margin-top: 20px;
             font-size: 0.9em;
@@ -225,7 +200,6 @@
     </style>
 </head>
 <body>
-    <div class="party" id="party"></div>
     
     <div class="calculator" id="calculator">
         <div class="header">
@@ -265,16 +239,8 @@
         <div class="footer">Made with 🔥 by Sayan @ Sayanox Company</div>
     </div>
 
-    <!-- ✅ COMPLETE FIXED JAVASCRIPT -->
     <script>
         let display = '0';
-        let memes = [
-            'Sayanox Math Magic! ✨', 
-            'Calculator > Sayan\'s Brain? 🤔', 
-            'Sayan says: Calculate kr! 💪', 
-            'Sayanox = Math + Fun 😂',
-            'By Sayan = Quality guaranteed! 🏆'
-        ];
         let jokes = [
             "Why was the equal sign so humble? Sayan taught it! 😂 - Sayanox",
             "Why did 7 eat 9? Sayanox special diet! 7 8 9! 🤣",
@@ -287,15 +253,13 @@
 
         function updateDisplay() {
             document.getElementById('display').textContent = display;
-            console.log('Display updated:', display); // Debug
         }
 
         function appendToDisplay(value) {
-            console.log('Appending:', value); // Debug
             if (display === '0' || display === 'Error' || display === 'Sayanox Error! 😂💥') {
                 display = '';
             }
-            if (value === '.' && display.includes('.')) return; // Prevent multiple decimals
+            if (value === '.' && display.includes('.')) return; 
             display += value;
             updateDisplay();
             shakeCalculator();
@@ -305,7 +269,6 @@
             display = '0';
             updateDisplay();
             document.getElementById('joke').innerHTML = 'Sayanox Clean Sweep! 🧹✨';
-            playSound('clean');
             document.getElementById('display').removeAttribute('data-meme');
         }
 
@@ -315,38 +278,23 @@
         }
 
         function calculate() {
-            console.log('Calculating:', display); // Debug
-            playSound('click');
             try {
-                // Replace symbols and calculate
                 let expression = display.replace(/×/g, '*').replace(/÷/g, '/');
                 let result = eval(expression);
                 
                 if (!isFinite(result)) throw 'Error';
                 
-                // Format result
-                display = Math.round(result * 10000000000) / 10000000000 + '';
-                display = display.slice(0, 14).replace(/\.?0+$/, '');
-                
-                if (display === '') display = '0';
-                
+                display = Math.round(result * 10000000) / 10000000 + '';
                 updateDisplay();
-                console.log('Result:', display); // Debug
                 
-                // Random effects
                 const rand = Math.random();
-                if (rand < 0.25) partyTime();
-                else if (rand < 0.5) epicMeme(result);
-                else if (rand < 0.75) sayanJoke();
-                else crazyResult(result);
+                if (rand < 0.5) showMeme("Sayan approved! ✅");
+                else randomJoke();
                 
             } catch (error) {
-                console.log('Error:', error); // Debug
                 display = 'Sayanox Error! 😂💥';
                 updateDisplay();
                 shakeHard();
-                showMeme('Math + Sayan = Chaos! 🤯');
-                playSound('error');
             }
         }
 
@@ -354,28 +302,6 @@
             const joke = jokes[Math.floor(Math.random() * jokes.length)];
             document.getElementById('joke').innerHTML = joke;
             shakeCalculator();
-            playSound('joke');
-        }
-
-        function epicMeme(result) {
-            const memes = [
-                `Sayanox says: ${result} is MAGIC! ✨`,
-                `Sayan approves this result! 👍 ${result}`,
-                `WOW Sayanox Power! ${result} 🤯`,
-                `Sayan's brain calculated: ${result} 🧠`
-            ];
-            showMeme(memes[Math.floor(Math.random() * memes.length)]);
-        }
-
-        function sayanJoke() { 
-            randomJoke(); 
-        }
-
-        function crazyResult(result) {
-            if (result > 1000) showMeme('Sayanox SUPER NUMBER! 🚀');
-            else if (Math.abs(result - 69) < 1) showMeme('Sayanox Nice! 😏');
-            else if (Math.abs(result - 420) < 1) showMeme('Sayanox Legend! 🔥');
-            else showMeme('Sayanox Approved! ✅');
         }
 
         function showMeme(text) {
@@ -384,10 +310,15 @@
 
         function shakeCalculator() {
             const calc = document.getElementById('calculator');
-            calc.style.animation = 'shakeCalc 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            calc.style.animation = 'shakeCalc 0.4s';
             setTimeout(() => calc.style.animation = '', 400);
         }
 
         function shakeHard() {
             const calc = document.getElementById('calculator');
-            calc.style.animation = 'shakeCalc 
+            calc.style.animation = 'shakeCalc 0.2s infinite';
+            setTimeout(() => calc.style.animation = '', 600);
+        } 
+    </script>
+</body>
+</html>
